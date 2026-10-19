@@ -109,7 +109,7 @@ DevDesk API
 ### Pré-requisitos
 
 - Git
-- Docker Desktop
+- Docker Desktop instalado e em execução
 
 ### 1. Clone o repositório
 
@@ -118,21 +118,48 @@ git clone https://github.com/danielpintorocha10-code/devdesk-api.git
 cd devdesk-api
 ```
 
-### 2. Suba a aplicação
+### 2. Inicie a aplicação
+
+Na pasta do projeto, execute:
 
 ```bash
 docker compose up --build
 ```
 
-O Compose inicia PostgreSQL, aplica as migrations e sobe a API.
+O Docker Compose inicia o PostgreSQL, aguarda a disponibilidade do banco de dados, aplica as migrations do Alembic e inicia a API.
 
-A API ficará disponível em:
+Na primeira execução, a construção da imagem pode levar alguns minutos.
 
-- `http://localhost:8000`
-- Swagger: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-- Health check: `http://localhost:8000/health`
+### 3. Acesse a API
 
+Com os serviços em execução, acesse:
+
+- **API:** http://localhost:8000
+- **Swagger UI:** http://localhost:8000/docs
+- **ReDoc:** http://localhost:8000/redoc
+- **Health check:** http://localhost:8000/health
+
+### 4. Crie o primeiro administrador
+
+Em outro terminal, na pasta do projeto, execute:
+
+```bash
+docker compose exec api python scripts/bootstrap_admin.py
+```
+
+Siga as instruções exibidas para informar o nome, o e-mail e a senha do administrador. A senha deve possuir pelo menos 8 caracteres.
+
+### 5. Encerre os serviços
+
+Para parar os serviços, pressione `Ctrl+C` no terminal em que o Docker Compose está executando.
+
+Se quiser encerrar os containers e a rede criada pelo Compose, execute:
+
+```bash
+docker compose down
+```
+
+> **Segurança:** as credenciais e a chave secreta definidas para demonstração não devem ser utilizadas em produção. Configure segredos fortes e exclusivos antes de qualquer implantação real.
 ### 3. Criar o primeiro administrador
 
 Após iniciar a aplicação com Docker Compose, abra outro terminal na pasta do projeto e execute:
