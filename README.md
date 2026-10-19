@@ -163,37 +163,83 @@ docker compose down
 
 ## Executar localmente sem Docker
 
-Crie um ambiente virtual:
+### 1. Pré-requisitos
+
+Antes de iniciar, instale:
+
+- Python 3.12 ou versão compatível com as dependências do projeto
+- PostgreSQL 16
+- Git
+
+### 2. Clone o repositório
+
+```bash
+git clone https://github.com/danielpintorocha10-code/devdesk-api.git
+cd devdesk-api
+```
+
+### 3. Crie e ative o ambiente virtual
 
 ```bash
 python -m venv .venv
 ```
 
-No Windows:
+**Windows (PowerShell):**
 
-```bash
-.venv\Scripts\activate
+```powershell
+.\.venv\Scripts\Activate.ps1
 ```
 
-No Linux/macOS:
+**Linux/macOS:**
 
 ```bash
 source .venv/bin/activate
 ```
 
-Instale as dependências:
+### 4. Instale as dependências
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-Copie `.env.example` para `.env`, configure o PostgreSQL e execute:
+### 5. Configure as variáveis de ambiente
+
+Copie `.env.example` para `.env`.
+
+**Windows (PowerShell):**
+
+```powershell
+Copy-Item .env.example .env
+```
+
+**Linux/macOS:**
+
+```bash
+cp .env.example .env
+```
+
+Edite o arquivo `.env` e configure os dados de conexão do PostgreSQL local. Confira se o banco de dados e o usuário existem e se a porta configurada corresponde à sua instalação.
+
+Use uma chave secreta própria para o ambiente de desenvolvimento. Não compartilhe credenciais reais nem publique o arquivo `.env`.
+
+### 6. Execute as migrações e inicie a API
+
+Com o ambiente virtual ativado e o PostgreSQL em execução, execute:
 
 ```bash
 alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
+### 7. Acesse a documentação
+
+Com a API em execução, abra:
+
+- **Swagger UI:** http://127.0.0.1:8000/docs
+- **ReDoc:** http://127.0.0.1:8000/redoc
+- **Verificação de saúde:** http://127.0.0.1:8000/health
+
+> **Observação:** a execução local depende de um PostgreSQL acessível e das variáveis definidas no arquivo `.env`. Não utilize credenciais de demonstração em produção.
 ## Fluxo rápido para demonstrar o projeto
 
 O fluxo abaixo é suficiente para uma demonstração em entrevista ou chamada de vídeo:
