@@ -135,13 +135,17 @@ A API ficará disponível em:
 
 ### 3. Criar o primeiro administrador
 
-Configure o `.env` conforme `.env.example` e execute o script:
+Após iniciar a aplicação com Docker Compose, abra outro terminal na pasta do projeto e execute:
 
 ```bash
-python scripts/bootstrap_admin.py
+docker compose exec api python scripts/bootstrap_admin.py
 ```
 
-Se estiver executando tudo dentro do Docker, entre no container da API e rode o mesmo script.
+Informe o nome, o e-mail e a senha solicitados pelo script. A senha deve possuir pelo menos 8 caracteres.
+
+O administrador será criado no banco PostgreSQL utilizado pela aplicação.
+
+> **Nota:** os serviços do Docker Compose utilizam configurações de demonstração. Não utilize as credenciais ou a chave secreta padrão em ambientes de produção.
 
 ## Executar localmente sem Docker
 
