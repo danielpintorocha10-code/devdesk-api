@@ -11,7 +11,7 @@
 
 O **DevDesk** simula o back-end de uma plataforma de suporte de TI. Usuários podem abrir e acompanhar chamados, enquanto técnicos e administradores possuem permissões adicionais para atuar no atendimento.
 
-O projeto foi construído com foco em práticas que aparecem no dia a dia de desenvolvimento back-end: autenticação, autorização, persistência relacional, migrations, validação de dados, auditoria, testes automatizados, containerização e integração contínua.
+O projeto foi construído com foco em práticas comuns no desenvolvimento back-end: autenticação, autorização, persistência relacional, migrations, validação de dados, auditoria, testes automatizados, containerização e integração contínua.
 
 ### O que este projeto demonstra
 
@@ -19,14 +19,14 @@ O projeto foi construído com foco em práticas que aparecem no dia a dia de des
 - Autenticação baseada em JWT/OAuth2 Password Flow
 - Autorização por perfil (**RBAC**)
 - Regras de acesso por proprietário do recurso
-- Modelagem e persistência com SQLAlchemy + PostgreSQL
-- Controle de evolução do banco com Alembic
+- Modelagem e persistência com SQLAlchemy e PostgreSQL
+- Controle de evolução do banco de dados com Alembic
 - Hash de senhas com Argon2
 - Validação e serialização com Pydantic
 - Histórico de alterações para auditoria
 - Testes automatizados com Pytest
 - Ambiente reproduzível com Docker Compose
-- CI com GitHub Actions
+- Integração contínua com GitHub Actions
 
 ## Funcionalidades
 
@@ -37,8 +37,8 @@ O projeto foi construído com foco em práticas que aparecem no dia a dia de des
 - Consulta do usuário autenticado
 - Perfis: `usuario`, `tecnico` e `admin`
 - Controle de usuário ativo/inativo
-- Área protegida para técnico
-- Área protegida para administrador
+- Área protegida para técnicos
+- Área protegida para administradores
 
 ### Chamados
 
@@ -55,30 +55,30 @@ O projeto foi construído com foco em práticas que aparecem no dia a dia de des
 ### Segurança e autorização
 
 - JWT com expiração
-- Senhas armazenadas somente como hash Argon2
+- Senhas armazenadas como hash Argon2
 - Endpoints protegidos por autenticação
-- RBAC no servidor
+- Controle de acesso baseado em perfis (RBAC) no servidor
 - Usuário comum acessa somente seus próprios chamados
 - Técnicos e administradores possuem visão operacional dos chamados
 - Segredos configurados por variáveis de ambiente
 
-## Stack
+## Stack tecnológica
 
 | Tecnologia | Utilização |
 |---|---|
 | Python | Linguagem principal |
 | FastAPI | Framework da API REST |
-| Pydantic | Validação e schemas |
-| SQLAlchemy | ORM e acesso ao banco |
+| Pydantic | Validação de dados e schemas |
+| SQLAlchemy | ORM e acesso ao banco de dados |
 | PostgreSQL | Banco de dados relacional |
-| Alembic | Migrations |
+| Alembic | Migrations do banco de dados |
 | JWT / OAuth2 | Autenticação |
 | Argon2 | Hash de senhas |
 | Pytest | Testes automatizados |
-| Docker Compose | Ambiente local |
+| Docker Compose | Ambiente de desenvolvimento |
 | GitHub Actions | Integração contínua |
 
-## Arquitetura
+## Arquitetura do projeto
 
 ```text
 DevDesk API
@@ -86,7 +86,7 @@ DevDesk API
 ├── app/
 │   ├── core/
 │   │   ├── config.py       # Configurações e ambiente
-│   │   ├── database.py     # Sessão/conexão com banco
+│   │   ├── database.py     # Sessão e conexão com o banco
 │   │   └── security.py     # JWT e hash de senhas
 │   │
 │   ├── models/             # Modelos SQLAlchemy
@@ -126,9 +126,9 @@ Na pasta do projeto, execute:
 docker compose up --build
 ```
 
-O Docker Compose inicia o PostgreSQL, aguarda a disponibilidade do banco de dados, aplica as migrations do Alembic e inicia a API.
+O Docker Compose inicia os serviços configurados para a aplicação. A configuração do projeto prevê o PostgreSQL, a aplicação das migrations do Alembic e a inicialização da API.
 
-Na primeira execução, a construção da imagem pode levar alguns minutos.
+Na primeira execução, a construção das imagens pode levar alguns minutos.
 
 ### 3. Acesse a API
 
@@ -159,7 +159,7 @@ Se quiser encerrar os containers e a rede criada pelo Compose, execute:
 docker compose down
 ```
 
-> **Segurança:** as credenciais e a chave secreta definidas para demonstração não devem ser utilizadas em produção. Configure segredos fortes e exclusivos antes de qualquer implantação real.
+> **Segurança:** as credenciais e a chave secreta de demonstração não devem ser utilizadas em produção. Configure segredos fortes e exclusivos antes de qualquer implantação real.
 
 ## Executar localmente sem Docker
 
@@ -222,7 +222,7 @@ Edite o arquivo `.env` e configure os dados de conexão do PostgreSQL local. Con
 
 Use uma chave secreta própria para o ambiente de desenvolvimento. Não compartilhe credenciais reais nem publique o arquivo `.env`.
 
-### 6. Execute as migrações e inicie a API
+### 6. Execute as migrations e inicie a API
 
 Com o ambiente virtual ativado e o PostgreSQL em execução, execute:
 
@@ -240,9 +240,10 @@ Com a API em execução, abra:
 - **Verificação de saúde:** http://127.0.0.1:8000/health
 
 > **Observação:** a execução local depende de um PostgreSQL acessível e das variáveis definidas no arquivo `.env`. Não utilize credenciais de demonstração em produção.
+
 ## Fluxo rápido para demonstrar o projeto
 
-O fluxo abaixo é suficiente para uma demonstração em entrevista ou chamada de vídeo:
+O fluxo abaixo pode ser utilizado como roteiro para uma demonstração em entrevista ou chamada de vídeo:
 
 1. Cadastre um usuário em `POST /usuarios/`.
 2. Faça login em `POST /auth/login`.
@@ -250,55 +251,55 @@ O fluxo abaixo é suficiente para uma demonstração em entrevista ou chamada de
 4. Crie um chamado em `POST /chamados/`.
 5. Consulte o chamado em `GET /chamados/{id}`.
 6. Adicione um comentário em `POST /chamados/{id}/comentarios`.
-7. Use um técnico/admin para atribuir o chamado e alterar seu status.
-8. Consulte `GET /chamados/{id}/historico` e mostre a auditoria.
+7. Use um técnico ou administrador para atribuir o chamado e alterar seu status.
+8. Consulte `GET /chamados/{id}/historico` para demonstrar a auditoria.
 
 ## Principais endpoints
 
 | Método | Endpoint | Acesso | Finalidade |
 |---|---|---|---|
 | `POST` | `/usuarios/` | Público | Cadastro |
-| `POST` | `/auth/login` | Público | Login/JWT |
-| `GET` | `/auth/me` | Autenticado | Perfil atual |
+| `POST` | `/auth/login` | Público | Login e obtenção do token |
+| `GET` | `/auth/me` | Autenticado | Consultar perfil atual |
 | `POST` | `/chamados/` | Autenticado | Criar chamado |
 | `GET` | `/chamados/` | Autenticado | Listar chamados |
 | `GET` | `/chamados/{id}` | Autenticado | Consultar chamado |
 | `PUT` | `/chamados/{id}` | Dono/técnico/admin | Atualizar chamado |
 | `PATCH` | `/chamados/{id}/status` | Técnico/admin | Alterar status |
 | `PATCH` | `/chamados/{id}/tecnico` | Técnico/admin | Atribuir técnico |
-| `POST` | `/chamados/{id}/comentarios` | Autenticado | Comentar |
-| `GET` | `/chamados/{id}/historico` | Autenticado | Auditoria |
+| `POST` | `/chamados/{id}/comentarios` | Autenticado | Adicionar comentário |
+| `GET` | `/chamados/{id}/historico` | Autenticado | Consultar auditoria |
 | `DELETE` | `/chamados/{id}` | Dono/admin | Remover chamado |
 
-A documentação completa e testável fica disponível no Swagger em `/docs`.
+A documentação interativa da API fica disponível no Swagger em `/docs` quando a aplicação está em execução.
 
 ## Testes
 
-Execute:
+Execute a suíte de testes com:
 
 ```bash
 pytest -q
 ```
 
-A suíte utiliza banco SQLite isolado para os testes, permitindo validar as regras principais sem depender de um PostgreSQL externo.
+A suíte utiliza um banco SQLite isolado para os testes, permitindo validar as regras principais sem depender de um PostgreSQL externo.
 
-O GitHub Actions executa a suíte automaticamente a cada push e pull request.
+O GitHub Actions está configurado para executar a suíte automaticamente a cada push e pull request.
 
 ## Qualidade e segurança
 
-- Segredos não ficam versionados.
-- `.env`, ambientes virtuais, caches e bancos locais estão no `.gitignore`.
+- Segredos não devem ser versionados.
+- `.env`, ambientes virtuais, caches e bancos locais devem permanecer no `.gitignore`.
 - Senhas não são armazenadas em texto puro.
 - Tokens possuem expiração.
 - A autorização é validada no back-end, não apenas na interface.
-- Regras de propriedade impedem que usuários comuns consultem chamados de terceiros.
+- Regras de propriedade restringem o acesso dos usuários aos chamados de terceiros.
 - Alterações importantes geram registros no histórico.
 
-> **Observação:** os valores presentes no `compose.yaml` são destinados ao ambiente local de demonstração. Em produção, credenciais e `SECRET_KEY` devem ser fornecidos por um mecanismo seguro de secrets.
+> **Observação:** os valores presentes no `compose.yaml` são destinados ao ambiente local de demonstração. Em produção, credenciais e `SECRET_KEY` devem ser fornecidos por um mecanismo seguro de gerenciamento de segredos.
 
 ## Próximas evoluções
 
-Algumas evoluções naturais para uma próxima versão:
+Possíveis evoluções para versões futuras:
 
 - Paginação e filtros avançados
 - Upload de anexos
@@ -307,13 +308,13 @@ Algumas evoluções naturais para uma próxima versão:
 - Logs estruturados
 - Rate limiting
 - Deploy em cloud
-- Cobertura de testes maior
+- Ampliação da cobertura de testes
 
 ## Para recrutadores
 
-Este repositório foi pensado para demonstrar fundamentos de **Back-end Júnior**, principalmente API REST, autenticação/autorização, banco relacional, testes e organização de projeto.
+Este repositório foi desenvolvido para demonstrar fundamentos de **Back-end Júnior**, principalmente API REST, autenticação e autorização, banco de dados relacional, testes automatizados e organização de projeto.
 
-Para entender rapidamente as decisões técnicas e os pontos que podem ser apresentados em uma entrevista, consulte [`docs/ENTREVISTA.md`](docs/ENTREVISTA.md).
+Para conhecer as decisões técnicas e os pontos que podem ser apresentados em uma entrevista, consulte [`docs/ENTREVISTA.md`](docs/ENTREVISTA.md).
 
 ## Autor
 
