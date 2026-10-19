@@ -114,7 +114,7 @@ DevDesk API
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/SEU-USUARIO/devdesk-api.git
+git clone https://github.com/danielpintorocha10-code/devdesk-api.git
 cd devdesk-api
 ```
 
