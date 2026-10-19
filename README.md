@@ -160,19 +160,6 @@ docker compose down
 ```
 
 > **Segurança:** as credenciais e a chave secreta definidas para demonstração não devem ser utilizadas em produção. Configure segredos fortes e exclusivos antes de qualquer implantação real.
-### 3. Criar o primeiro administrador
-
-Após iniciar a aplicação com Docker Compose, abra outro terminal na pasta do projeto e execute:
-
-```bash
-docker compose exec api python scripts/bootstrap_admin.py
-```
-
-Informe o nome, o e-mail e a senha solicitados pelo script. A senha deve possuir pelo menos 8 caracteres.
-
-O administrador será criado no banco PostgreSQL utilizado pela aplicação.
-
-> **Nota:** os serviços do Docker Compose utilizam configurações de demonstração. Não utilize as credenciais ou a chave secreta padrão em ambientes de produção.
 
 ## Executar localmente sem Docker
 
